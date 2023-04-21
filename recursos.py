@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import messagebox
 import datetime
-def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada):
+def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada):
     # Obtener los valores ingresados
     tipo_habitacion_value = tipo_habitacion_combobox.get()
     estado_value = estado_combobox.get()
@@ -12,7 +12,7 @@ def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombr
     telefono_value = telefono_entrada.get()
     fecha_ingreso_value = fecha_ingreso_entrada.get()
     fecha_salida_value = fecha_salida_entrada.get()
-
+    observacion_value = observacion_entrada.get()
     '''print(tipo_habitacion_value)
     print(estado_value)
     print(num_doc_value)
@@ -21,14 +21,14 @@ def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombr
     print(num_boleta_value)
     print(telefono_value)'''
 
-    mensaje = f"Tipo de Habitación: {tipo_habitacion_value}\nEstado: {estado_value}\nN° Documento: {num_doc_value}\nNombres: {nombre_value}\nApellidos: {apellido_value}\nN° Boleta: {num_boleta_value}\nTeléfono: {telefono_value}\nFecha de Ingreso: {fecha_ingreso_value}\nFecha de Salida: {fecha_salida_value}"
+    mensaje = f"Tipo de Habitación: {tipo_habitacion_value}\nEstado: {estado_value}\nN° Documento: {num_doc_value}\nNombres: {nombre_value}\nApellidos: {apellido_value}\nN° Boleta: {num_boleta_value}\nTeléfono: {telefono_value}\nFecha de Ingreso: {fecha_ingreso_value}\nFecha de Salida: {fecha_salida_value}\nObservación: {observacion_value}"
     print(mensaje)
     tkinter.messagebox.showinfo("Datos ingresados", mensaje)
 
     # Limpiar los campos
-    limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada)
+    limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada)
 
-def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada):
+def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada):
     tipo_habitacion_combobox.set("")
     estado_combobox.set("")
     num_doc_entrada.delete(0, tkinter.END)
@@ -39,6 +39,7 @@ def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nomb
     hoy = datetime.date.today().strftime('%d/%m/%Y')
     fecha_ingreso_entrada.set_date(hoy)
     fecha_salida_entrada.set_date(hoy)
+    observacion_entrada.delete(0, tkinter.END)
     #fecha_ingreso_entrada.set_date("")
     #fecha_salida_entrada.set_date("")
 
