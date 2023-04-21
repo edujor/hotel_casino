@@ -30,9 +30,9 @@ def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombr
     llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,apellido_value,num_boleta_value,telefono_value,fecha_ingreso_value,fecha_salida_value,observacion_value,fecha_salida_indefinida)
 
     # Limpiar los campos
-    limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada)
+    limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,fecha_salida_indefinida)
 
-def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada):
+def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,fecha_salida_indefinida):
     tipo_habitacion_combobox.set("")
     estado_combobox.set("")
     num_doc_entrada.delete(0, tkinter.END)
@@ -44,6 +44,8 @@ def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nomb
     fecha_ingreso_entrada.set_date(hoy)
     fecha_salida_entrada.set_date(hoy)
     observacion_entrada.delete(0, tkinter.END)
+    # Desmarcar la opción de "fecha indefinida"
+    fecha_salida_indefinida.deselect()
     #fecha_ingreso_entrada.set_date("")
     #fecha_salida_entrada.set_date("")
 
