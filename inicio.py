@@ -1,9 +1,10 @@
 import tkinter
+import tkinter as tk
 from tkinter import ttk
 from tkcalendar import DateEntry
 from openpyxl import load_workbook
 import win32com.client
-from recursos import guardar_datos
+from recursos import *
 
 # Carga el archivo de Excel
 workbook = load_workbook(filename='hotel.xlsx')
@@ -65,6 +66,9 @@ telefono.grid(row=4, column=0)
 telefono_entrada = tkinter.Entry(user_info_frame)
 telefono_entrada.grid(row=5, column=0)
 
+fecha_ingreso_entrada, fecha_salida_entrada = crear_widgets(user_info_frame,DateEntry)
+
+'''
 fecha_ingreso = tkinter.Label(user_info_frame, text="Fecha Ingreso")
 fecha_ingreso.grid(row=4, column=1)
 
@@ -75,7 +79,7 @@ fecha_salida = tkinter.Label(user_info_frame, text="Fecha Salida")
 fecha_salida.grid(row=4, column=2)
 
 fecha_salida_entrada = DateEntry(user_info_frame, date_pattern ='dd/mm/yyyy')
-fecha_salida_entrada.grid(row=5, column=2)
+fecha_salida_entrada.grid(row=5, column=2)'''
 
 for widget in user_info_frame.winfo_children():
     widget.grid_configure(padx=25, pady=5)
@@ -88,3 +92,4 @@ window.mainloop()
 
 #workbook.Close()
 excel.Quit()
+
