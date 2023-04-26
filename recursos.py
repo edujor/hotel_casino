@@ -14,14 +14,6 @@ def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombr
     fecha_ingreso_value = fecha_ingreso_entrada.get()
     fecha_salida_value = fecha_salida_entrada.get()
     observacion_value = observacion_entrada.get()
-    #fecha_salida_indefinida_value = fecha_salida_indefinida.get()
-    '''print(tipo_habitacion_value)
-    print(estado_value)
-    print(num_doc_value)
-    print(nombre_value)
-    print(apellido_value)
-    print(num_boleta_value)
-    print(telefono_value)'''
 
     mensaje = f"Tipo de Habitación: {tipo_habitacion_value}\nEstado: {estado_value}\nN° Documento: {num_doc_value}\nNombres: {nombre_value}\nApellidos: {apellido_value}\nN° Boleta: {num_boleta_value}\nTeléfono: {telefono_value}\nFecha de Ingreso: {fecha_ingreso_value}\nFecha de Salida: {fecha_salida_value}\nObservación: {observacion_value}"
     print(mensaje)
@@ -50,6 +42,9 @@ def limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nomb
     #fecha_salida_entrada.set_date("")
 
 def crear_widgets(user_info_frame,DateEntry):
+
+    fecha_salida_indefinida_var = tkinter.BooleanVar()
+
     # Crear widget de la fecha de ingreso
     fecha_ingreso = tkinter.Label(user_info_frame, text="Fecha Ingreso")
     fecha_ingreso.grid(row=4, column=1)
@@ -65,14 +60,34 @@ def crear_widgets(user_info_frame,DateEntry):
     fecha_salida_entrada.grid(row=5, column=2)
 
     # Crear widget para la opción de fecha de salida indefinida
-    fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida")
+    # fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida")
+    fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida", variable=fecha_salida_indefinida_var)
     fecha_salida_indefinida.grid(row=6, column=3)
 
     # Definir función para actualizar fecha de salida mínima
     def actualizar_fecha_salida_minimo(evento):
         try:
             fecha_ingreso = evento.widget.get_date()
-            fecha_salida_entrada.config(validate="none")
+
+            if fecha_salida_indefinida_var.get():
+                fecha_salida_entrada.delete(0, tkinter.END)
+            else:
+                fecha_salida_entrada.config(
+                    mindate=fecha_ingreso,
+                    year=fecha_ingreso.year,
+                    month=fecha_ingreso.month,
+                    day=fecha_ingreso.day
+                    
+                )
+                fecha_salida_entrada.config(validate="key") 
+            fecha_salida_entrada.set_date(fecha_salida_entrada.get_date())
+
+        except AttributeError:
+            pass
+        '''try:
+            fecha_ingreso = evento.widget.get_date()
+            #fecha_salida_entrada.config(validate="none")
+            #fecha_salida_entrada.delete(0, tkinter.END)
 
             if not fecha_salida_indefinida.get():
                 fecha_salida_entrada.config(
@@ -84,14 +99,14 @@ def crear_widgets(user_info_frame,DateEntry):
                 fecha_salida_entrada.config(validate="key")       
             else:
                 fecha_salida_entrada.delete(0, tkinter.END)
+                #fecha_salida_entrada.config(validate="none")
 
             fecha_salida_entrada.set_date(fecha_salida_entrada.get_date())
 
         except AttributeError:
-            pass
+            pass'''
     # Vincular función con el evento de selección de fecha de ingreso
     fecha_ingreso_entrada.bind("<<DateEntrySelected>>", actualizar_fecha_salida_minimo)
-    print('Fecha salida indefinida → ',fecha_salida_indefinida)
     # Devolver los widgets
     return fecha_ingreso_entrada, fecha_salida_entrada ,fecha_salida_indefinida
 
@@ -104,8 +119,23 @@ def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,a
         sheet = workbook['Registro de clientes']
     else:
         sheet = workbook.create_sheet('Registro de clientes')
+    
+    row = sheet.max_row + 1
+    sheet[f'A{row}'] = tipo_habitacion_value
+    sheet[f'B{row}'] = estado_value
+    sheet[f'C{row}'] = num_doc_value
+    sheet[f'D{row}'] = nombre_value
+    sheet[f'E{row}'] = apellido_value
+    sheet[f'F{row}'] = num_boleta_value
+    sheet[f'G{row}'] = telefono_value
+    sheet[f'H{row}'] = fecha_ingreso_value
+    if not fecha_salida_indefinida_value:
+        sheet[f'I{row}'] = fecha_salida_value
+    else:
+        sheet[f'I{row}'] = "Indefinido"
+    sheet[f'J{row}'] = observacion_value
 
-    sheet['A2'] = tipo_habitacion_value
+    '''sheet['A2'] = tipo_habitacion_value
     sheet['B2'] = estado_value
     sheet['C2'] = num_doc_value
     sheet['D2'] = nombre_value
@@ -117,7 +147,7 @@ def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,a
         sheet['I2'] = fecha_salida_value
     else:
         sheet['I2'] = "Indefinido"
-    sheet['J2'] = observacion_value
+    sheet['J2'] = observacion_value'''
 
 # Guarda el libro de trabajo de Excel en un archivo
     workbook.save('hotel.xlsx')
