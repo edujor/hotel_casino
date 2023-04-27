@@ -132,7 +132,7 @@ def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,a
     sheet[f'G{row}'] = telefono_value
     sheet[f'H{row}'] = fecha_ingreso_value
     
-    if cond_indefinido.get():
+    if not cond_indefinido.get():
         sheet[f'I{row}'] = fecha_salida_value
     else:
         sheet[f'I{row}'] = "Indefinido"
