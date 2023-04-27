@@ -2,7 +2,7 @@ import tkinter
 from tkinter import messagebox
 import datetime
 from openpyxl import load_workbook
-def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,fecha_salida_indefinida):
+def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,cond_indefinido,fecha_salida_indefinida):
     # Obtener los valores ingresados
     tipo_habitacion_value = tipo_habitacion_combobox.get()
     estado_value = estado_combobox.get()
@@ -19,8 +19,7 @@ def guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombr
     print(mensaje)
     tkinter.messagebox.showinfo("Datos ingresados", mensaje)
     
-    llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,apellido_value,num_boleta_value,telefono_value,fecha_ingreso_value,fecha_salida_value,observacion_value,fecha_salida_indefinida)
-
+    llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,apellido_value,num_boleta_value,telefono_value,fecha_ingreso_value,fecha_salida_value,observacion_value,cond_indefinido)
     # Limpiar los campos
     limpiar_campos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,fecha_salida_indefinida)
 
@@ -61,14 +60,14 @@ def crear_widgets(user_info_frame,DateEntry):
 
     # Crear widget para la opción de fecha de salida indefinida
     # fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida")
-    fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida", variable=fecha_salida_indefinida_var)
+    cond_indefinido = tkinter.BooleanVar()
+    fecha_salida_indefinida = tkinter.Checkbutton(user_info_frame, text="Fecha de salida indefinida", variable=cond_indefinido)
     fecha_salida_indefinida.grid(row=6, column=3)
-
+    
     # Definir función para actualizar fecha de salida mínima
     def actualizar_fecha_salida_minimo(evento):
         try:
             fecha_ingreso = evento.widget.get_date()
-
             if fecha_salida_indefinida_var.get():
                 fecha_salida_entrada.delete(0, tkinter.END)
             else:
@@ -105,12 +104,15 @@ def crear_widgets(user_info_frame,DateEntry):
 
         except AttributeError:
             pass'''
+    print('condicion → ',cond_indefinido)
+    print(type(cond_indefinido))
     # Vincular función con el evento de selección de fecha de ingreso
     fecha_ingreso_entrada.bind("<<DateEntrySelected>>", actualizar_fecha_salida_minimo)
     # Devolver los widgets
-    return fecha_ingreso_entrada, fecha_salida_entrada ,fecha_salida_indefinida
+    
+    return fecha_ingreso_entrada, fecha_salida_entrada ,cond_indefinido,fecha_salida_indefinida
 
-def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,apellido_value,num_boleta_value,telefono_value,fecha_ingreso_value,fecha_salida_value,observacion_value,fecha_salida_indefinida_value):
+def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,apellido_value,num_boleta_value,telefono_value,fecha_ingreso_value,fecha_salida_value,observacion_value,cond_indefinido):
     # Carga el archivo de Excel
     workbook = load_workbook(filename='hotel.xlsx')
 
@@ -129,7 +131,8 @@ def llenar_excel(tipo_habitacion_value,estado_value,num_doc_value,nombre_value,a
     sheet[f'F{row}'] = num_boleta_value
     sheet[f'G{row}'] = telefono_value
     sheet[f'H{row}'] = fecha_ingreso_value
-    if not fecha_salida_indefinida_value:
+    
+    if cond_indefinido.get():
         sheet[f'I{row}'] = fecha_salida_value
     else:
         sheet[f'I{row}'] = "Indefinido"

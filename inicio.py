@@ -66,7 +66,7 @@ telefono.grid(row=4, column=0)
 telefono_entrada = tkinter.Entry(user_info_frame)
 telefono_entrada.grid(row=5, column=0)
 
-fecha_ingreso_entrada, fecha_salida_entrada,fecha_salida_indefinida = crear_widgets(user_info_frame,DateEntry)
+fecha_ingreso_entrada, fecha_salida_entrada,cond_indefinido,fecha_salida_indefinida = crear_widgets(user_info_frame,DateEntry)
 
 user_info_frame_observacion =tkinter.LabelFrame(frame, text="Observación", padx=10, pady=10)
 user_info_frame_observacion.grid(row= 6, column=0, padx=40, pady=15)
@@ -78,7 +78,7 @@ for widget in user_info_frame.winfo_children():
     widget.grid_configure(padx=25, pady=5)
 
 # Button
-button = tkinter.Button(frame, text="Ingresar Datos", command=lambda: guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,fecha_salida_indefinida))
+button = tkinter.Button(frame, text="Ingresar Datos", command=lambda: guardar_datos(tipo_habitacion_combobox,estado_combobox,num_doc_entrada,nombre_entrada,apellido_entrada,num_boleta_entrada,telefono_entrada,fecha_ingreso_entrada,fecha_salida_entrada,observacion_entrada,cond_indefinido,fecha_salida_indefinida))
 button.grid(row=0, column=3, sticky="news", padx=20, pady=10)
 
 window.mainloop()
