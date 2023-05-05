@@ -122,7 +122,3 @@ button = tkinter.Button(frame, text="Ingresar Datos", command=lambda: guardar_da
 button.grid(row=0, column=3, sticky="news", padx=20, pady=10)
 
 window.mainloop()
-
-#workbook.Close()
-#excel.Quit()
-

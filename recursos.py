@@ -15,10 +15,10 @@ def main_excel(filename,year,month):
         # Si el archivo existe, carga el libro de trabajo
         workbook = load_workbook(filename)
     else:
+        print('Creando el excel ...')
         # Si el archivo no existe, crea un nuevo libro de trabajo
         workbook = Workbook()
-        # Guarda el libro de trabajo con el nombre del archivo
-        
+
         # worksheet = workbook.active
         crear_excel(workbook,year,month)
         workbook.save(filename)
@@ -29,6 +29,7 @@ def crear_excel(workbook,year,month):
     for dia in lista_dias_inicial:
         # dia_str = dia
         hoja = workbook.create_sheet(str(dia))
+        print('creando la hoja ',str(dia))
         # Creando la 1° Fila
         cell = hoja['B1']
         cell.value = 'HAB'
