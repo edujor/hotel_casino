@@ -2,21 +2,59 @@ import tkinter
 import tkinter as tk
 from tkinter import ttk
 from tkcalendar import DateEntry
-from openpyxl import load_workbook
-import win32com.client
 from recursos import *
 
-# Carga el archivo de Excel
-workbook = load_workbook(filename='hotel.xlsx')
+year=2023
+month = 4
+filename='RESERVA_ABRIL_2023_PRUEBA.xlsx'
 
-# Crea una nueva hoja en el archivo de Excel
-sheet = workbook.create_sheet('Registro de clientes')
+def open_register():
+    # Muestra la ventana de registro de clientes
+    window.deiconify()
+    window_register.lift()
+    window_register.focus_set()
 
-#excel = win32com.client.Dispatch('Excel.Application')
-#instancia_excel = excel.Workbooks('hotel.xlsx')
+def open_data():
+    # Abre los datos de los clientes
+    messagebox.showinfo("Datos de clientes", "Aquí estarían los datos de los clientes si los hubiera")
+
+def boton_registrar():
+    pass
 
 window = tkinter.Tk()
 window.title("Formulario para hotel")
+
+notebook = tk.ttk.Notebook(window)
+notebook.pack()
+
+lista_dias_inicial = conseguir_fechas(year,month)
+
+for date in lista_dias_inicial:
+    # Crea una nueva pestaña
+    tab = tk.Frame(notebook)
+    notebook.add(tab, text=f"{date[0]} {date[1]}")
+    
+    # Agrega la lista de fechas y días a la pestaña
+    label = tk.Label(tab, text=f"{date[0]} {date[1]}")
+    label.pack()
+
+leer_excel(filename,tk,window)
+
+# Crea los botones
+button_register = tk.Button(window, text="Registrar", command=open_register)
+button_data = tk.Button(window, text="Ver Datos", command=open_data)
+
+# Añade los botones a la ventana
+button_register.pack()
+button_data.pack()
+
+# Crea la ventana de registro de clientes
+window_register = tk.Toplevel(window)
+window_register.title("Formulario para hotel")
+# ... sigue aquí el resto del código que ya tienes ...
+
+# Oculta la ventana de registro de clientes al inicio
+window_register.withdraw()
 
 frame = tkinter.Frame(window)
 frame.pack()
