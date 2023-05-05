@@ -6,7 +6,7 @@ from recursos import *
 
 year=2023
 month = 4
-filename='RESERVA_ABRIL_2023_PRUEBA.xlsx'
+filename='RESERVA_ABRIL_2023_PRUEBA_CREACION.xlsx'
 
 def open_register():
     # Muestra la ventana de registro de clientes
@@ -20,6 +20,8 @@ def open_data():
 
 def boton_registrar():
     pass
+
+workbook = main_excel(filename,year,month)
 
 window = tkinter.Tk()
 window.title("Formulario para hotel")

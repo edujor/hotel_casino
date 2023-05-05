@@ -10,39 +10,113 @@ from openpyxl.styles import Font, Alignment
 
 def main_excel(filename,year,month):
     file_path = Path(filename)
-    
     # Verifica si el archivo ya existe
     if file_path.exists():
         # Si el archivo existe, carga el libro de trabajo
         workbook = load_workbook(filename)
-
     else:
         # Si el archivo no existe, crea un nuevo libro de trabajo
         workbook = Workbook()
         # Guarda el libro de trabajo con el nombre del archivo
         
-        worksheet = workbook.active
-
+        # worksheet = workbook.active
+        crear_excel(workbook,year,month)
         workbook.save(filename)
     return workbook
 
-def crear_excel(ws):
-    cell = ws['B1']
-    cell.value = 'HAB'
-    bold_font = Font(bold=True)
-    # Asignar la fuente en negrita a la celda
-    cell.font = bold_font
-    # Crear un objeto Alignment para centrar el texto en la celda
-    center_alignment = Alignment(horizontal='center', vertical='center')
-    # Asignar la alineación centrada a la celda
-    cell.alignment = center_alignment
-    ws['B1'] = 'HAB'
-    ws['C1'] = 'TIPO DE HAB'
+def crear_excel(workbook,year,month):
+    lista_dias_inicial = conseguir_fechas(year,month)
+    for dia in lista_dias_inicial:
+        # dia_str = dia
+        hoja = workbook.create_sheet(str(dia))
+        # Creando la 1° Fila
+        cell = hoja['B1']
+        cell.value = 'HAB'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['C1']
+        cell.value = 'TIPO DE HAB'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['D1']
+        cell.value = 'ESTADO'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['E1']
+        cell.value = 'ID'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['F1']
+        cell.value = 'APELLIDOS'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['G1']
+        cell.value = 'NOMBRES'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['H1']
+        cell.value = 'N° BOLETA'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['I1']
+        cell.value = 'TELEFONO'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['J1']
+        cell.value = 'F. INGRESO'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['K1']
+        cell.value = 'F. SALIDA'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['L1']
+        cell.value = 'N° HUESPEDES'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['M1']
+        cell.value = 'F. DE PAGO'
+        aplicar_formato(cell,'negrita','centrado')
+        cell = hoja['N1']
+        cell.value = 'OBSERVACIÓN'
+        aplicar_formato(cell,'negrita','centrado')
 
-def formato_celda():
+        # Creando el resto de filas
+        llenando_datos_iniciales(hoja)
 
-    pass
+def llenando_datos_iniciales(sheet):
+    for i in range(2, 103):
+    # Insertar número en columna 1
+        sheet.cell(row=i, column=1, value=i-1)
+    
+        # Determinar valor para columna 2
+        if i in [2,34,35,68,69,76,95]:
+            valor = "SIMPLE"
+        elif i in [10,13,20,21,22,25,41,42,56,61,62]:
+            valor = "MATRIMONIAL"
+        elif i in [7,8,27,28]:
+            valor = "SUITE"
+        elif i in [11,12,14,15,23,24,26,43,44,45,46,47,48,49,54,55,57,58,59,60,77,78,79,80,81,82,83,88,89,90,91,92,93,94]:
+            valor = "TRIPLE"
+        else:
+            valor = "DOBLE"
+        # Insertar valor en columna 2
+        sheet.cell(row=i, column=2, value=valor)
 
+
+def aplicar_formato(cell, fuente, alineacion):
+    # Crear objeto de fuente
+    if fuente == 'negrita':
+        fuente_obj = Font(bold=True)
+    elif fuente == 'cursiva':
+        fuente_obj = Font(italic=True)
+    elif fuente == 'subrayado':
+        fuente_obj = Font(underline='single')
+    else:
+        fuente_obj = Font()
+
+    # Crear objeto de alineación
+    if alineacion == 'centrado':
+        alineacion_obj = Alignment(horizontal='center')
+    elif alineacion == 'derecha':
+        alineacion_obj = Alignment(horizontal='right')
+    elif alineacion == 'izquierda':
+        alineacion_obj = Alignment(horizontal='left')
+    else:
+        alineacion_obj = Alignment()
+
+    # Asignar fuente y alineación a la celda
+    cell.font = fuente_obj
+    cell.alignment = alineacion_obj
 def conseguir_fechas(year,month):
 
     # Establecer la configuración regional en español
