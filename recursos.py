@@ -22,6 +22,8 @@ def main_excel(filename,year,month):
         # worksheet = workbook.active
         crear_excel(workbook,year,month)
         workbook.save(filename)
+        sheet_names = workbook.sheetnames
+        print(sheet_names)
     return workbook
 
 def crear_excel(workbook,year,month):
@@ -29,7 +31,6 @@ def crear_excel(workbook,year,month):
     for dia in lista_dias_inicial:
         # dia_str = dia
         hoja = workbook.create_sheet(str(dia))
-        print('creando la hoja ',str(dia))
         # Creando la 1° Fila
         cell = hoja['B1']
         cell.value = 'HAB'
@@ -145,7 +146,6 @@ def leer_excel(filename,tk,window):
     # Crea una pestaña en la ventana de tkinter para cada hoja del libro de trabajo
     for sheet_name in sheet_names:
         print('Pestaña actual → ',sheet_name)
-        print("Número de columnas en la hoja", sheet_name, ":", sheet.max_column)
         # Crea una pestaña para la hoja actual
         tab = tk.Frame(window)
         tab.pack(fill="both", expand=True)

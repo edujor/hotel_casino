@@ -20,8 +20,9 @@ def open_data():
 
 def boton_registrar():
     pass
-
+print('entrando a main excel')
 workbook = main_excel(filename,year,month)
+print('salio del main excel')
 
 window = tkinter.Tk()
 window.title("Formulario para hotel")
