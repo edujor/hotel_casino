@@ -1,6 +1,8 @@
 import tkinter as tk
+from tkinter import ttk
 import openpyxl
 from openpyxl import load_workbook
+
 
 class ExcelEditor(tk.Frame):
     def __init__(self, master):
