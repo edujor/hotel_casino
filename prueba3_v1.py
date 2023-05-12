@@ -49,25 +49,31 @@ class ExcelEditor(tk.Frame):
 
         # Botón para cargar desde Excel
         load_button = tk.Button(self, text="Cargar Excel", command=self.load_from_excel)
-        load_button.grid(row=6, column=0, columnspan=1)    
+        load_button.grid(row=22, column=0, columnspan=1)    
 
         # Botón para guardar en Excel
         save_button = tk.Button(self, text="Guardar", command=self.save_to_excel)
-        save_button.grid(row=6, column=0, columnspan=3)
+        save_button.grid(row=22, column=0, columnspan=3)
 
         # Botones de navegación para cargar las páginas
         next_button = tk.Button(self, text="Siguiente", command=self.next_page)
-        next_button.grid(row=7, column=0)
+        next_button.grid(row=23, column=0)
         previous_button = tk.Button(self, text="Anterior", command=self.previous_page)
-        previous_button.grid(row=7, column=1)
+        previous_button.grid(row=23, column=1)
 
     def load_from_excel(self):
-        # workbook = load_workbook(filename='ejemplo3.xlsx')
         workbook = load_workbook(filename='PRUEBA_1HOJA.xlsx')
         sheet = workbook.active
+
         # Calcular el rango de filas para la página actual
         start_row = self.current_page * self.page_size + 2  # +2 para omitir la primera fila de encabezados
         end_row = start_row + self.page_size
+
+        # Limpiar la tabla actual
+        self.clear_table()
+
+        # Crear nuevas instancias de Entry para la página actual
+        self.create_entries()
 
         # Leer los datos del archivo Excel y cargarlos en la tabla para la página actual
         for i, row in enumerate(self.entries):
@@ -76,6 +82,23 @@ class ExcelEditor(tk.Frame):
                 if cell_value is not None:
                     entry.delete(0, tk.END)
                     entry.insert(0, cell_value)
+
+    def clear_table(self):
+        # Limpiar las instancias de Entry existentes
+        for row in self.entries:
+            for entry in row:
+                entry.destroy()
+
+    def create_entries(self):
+        # Crear nuevas instancias de Entry para la página actual
+        self.entries = []
+        for i in range(self.page_size):
+            row_entries = []
+            for j in range(10):
+                entry = tk.Entry(self)
+                entry.grid(row=i + 1, column=j)
+                row_entries.append(entry)
+            self.entries.append(row_entries)
 
         '''# Leer los datos del archivo Excel y cargarlos en la tabla
         for i, row in enumerate(self.entries):
@@ -100,7 +123,7 @@ class ExcelEditor(tk.Frame):
         sheet = workbook.active
 
         # Escribir los encabezados de las columnas en el archivo Excel
-        headers = ["HAB", "NOMBRE", "N° DIAS"]
+        headers = ["HAB", "TIPO DE HAB", "ESTADO","ID","APELLIDOS","NOMBRES","N° BOLETA","TELEFONO","F.INGRESO","F.SALIDA"]
         for col, header in enumerate(headers):
             sheet.cell(row=1, column=col + 1).value = header
 
@@ -111,7 +134,7 @@ class ExcelEditor(tk.Frame):
                 sheet.cell(row=i + 2, column=j + 1).value = value
 
         # Guardar el archivo Excel
-        workbook.save('ejemplo3.xlsx')
+        workbook.save('PRUEBA_1HOJA.xlsx')
 
 # Crear la ventana principal
 root = tk.Tk()
